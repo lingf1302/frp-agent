@@ -31,7 +31,7 @@ try {
     }
     Copy-Item -LiteralPath (Join-Path $root 'install\frpc.windows.toml.example') -Destination (Join-Path $stage 'frpc.toml')
     Copy-Item -LiteralPath (Join-Path $root 'install\windows-msi\configure.ps1') -Destination (Join-Path $stage 'configure.ps1')
-    & $wix.Source build (Join-Path $root 'install\windows-msi\Package.wxs') "-dSourceDir=$stage" "-dProductVersion=$Version" '-arch' $packageArchitecture "-o$output"
+    & $wix.Source build (Join-Path $root 'install\windows-msi\Package.wxs') '-d' "SourceDir=$stage" '-d' "ProductVersion=$Version" '-arch' $packageArchitecture '-o' $output
     if ($LASTEXITCODE -ne 0) { throw 'WiX build failed.' }
     Get-Item -LiteralPath $output | Select-Object FullName,Length,LastWriteTime
 } finally {
