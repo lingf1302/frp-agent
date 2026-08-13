@@ -1,0 +1,10 @@
+# Replace these values, then start the service with:
+# Start-Service frp-agent
+serverAddr = "CHANGE_ME"
+serverPort = 7000
+
+# Uncomment for token authentication.
+# auth.method = "token"
+# auth.token = "CHANGE_ME"
+
+# Add [[proxies]] entries below.

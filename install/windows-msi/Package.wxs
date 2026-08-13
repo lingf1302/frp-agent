@@ -1,0 +1,26 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="FRP Agent" Manufacturer="FRP Agent" Version="$(var.ProductVersion)" UpgradeCode="E551B467-D4D1-4F1A-BAB8-BB4E498FBA72" Language="1033" Platform="$(var.PackagePlatform)">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of FRP Agent is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="frp-agent">
+        <Component Id="AgentBinaries" Bitness="always64" Guid="A05D3BB9-DF78-4D8D-96D3-87BD9E9F4AC6">
+          <File Id="FrpcExe" Source="$(var.SourceDir)\frpc.exe" KeyPath="yes" />
+          <File Id="FrpcServiceExe" Source="$(var.SourceDir)\frpc-service.exe" />
+          <File Id="ConfigureScript" Source="$(var.SourceDir)\configure.ps1" />
+          <ServiceInstall Id="AgentService" Name="frp-agent" DisplayName="FRP managed client agent" Description="FRP managed client agent" Start="demand" Type="ownProcess" ErrorControl="normal" />
+          <ServiceControl Id="StopAgentService" Name="frp-agent" Stop="both" Remove="uninstall" Wait="yes" />
+        </Component>
+        <Component Id="AgentConfig" Bitness="always64" Permanent="yes" NeverOverwrite="yes" Guid="BDF5EFF7-F34B-4621-ADCA-BB12DAB00601">
+          <File Id="FrpcConfig" Source="$(var.SourceDir)\frpc.toml" KeyPath="yes" />
+        </Component>
+      </Directory>
+    </StandardDirectory>
+
+    <Feature Id="MainFeature" Title="FRP Agent" Level="1">
+      <ComponentRef Id="AgentBinaries" />
+      <ComponentRef Id="AgentConfig" />
+    </Feature>
+  </Package>
+</Wix>
