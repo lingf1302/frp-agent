@@ -12,7 +12,7 @@ $stage = Join-Path $root ('.msi-stage\windows-' + $Architecture)
 $zip = Join-Path $root ('dist\agent\frp-agent_windows_' + $Architecture + '.zip')
 $output = Join-Path $root ('dist\agent\frp-agent_windows_' + $Architecture + '.msi')
 $wix = Get-Command wix.exe,wix -ErrorAction SilentlyContinue | Select-Object -First 1
-$packagePlatform = if ($Architecture -eq 'amd64') { 'x64' } else { 'arm64' }
+$packageArchitecture = if ($Architecture -eq 'amd64') { 'x64' } else { 'arm64' }
 
 if (-not $wix) { throw 'WiX CLI is required. Install with: winget install --id WiXToolset.WiXCLI --exact' }
 if (-not $InputDirectory -and -not (Test-Path -LiteralPath $zip)) { throw "Windows package not found: $zip" }
@@ -31,7 +31,7 @@ try {
     }
     Copy-Item -LiteralPath (Join-Path $root 'install\frpc.windows.toml.example') -Destination (Join-Path $stage 'frpc.toml')
     Copy-Item -LiteralPath (Join-Path $root 'install\windows-msi\configure.ps1') -Destination (Join-Path $stage 'configure.ps1')
-    & $wix.Source build (Join-Path $root 'install\windows-msi\Package.wxs') "-dSourceDir=$stage" "-dProductVersion=$Version" "-dPackagePlatform=$packagePlatform" "-o$output"
+    & $wix.Source build (Join-Path $root 'install\windows-msi\Package.wxs') "-dSourceDir=$stage" "-dProductVersion=$Version" '-arch' $packageArchitecture "-o$output"
     if ($LASTEXITCODE -ne 0) { throw 'WiX build failed.' }
     Get-Item -LiteralPath $output | Select-Object FullName,Length,LastWriteTime
 } finally {

@@ -1,5 +1,5 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
-  <Package Name="FRP Agent" Manufacturer="FRP Agent" Version="$(var.ProductVersion)" UpgradeCode="E551B467-D4D1-4F1A-BAB8-BB4E498FBA72" Language="1033" Platform="$(var.PackagePlatform)">
+  <Package Name="FRP Agent" Manufacturer="FRP Agent" Version="$(var.ProductVersion)" UpgradeCode="E551B467-D4D1-4F1A-BAB8-BB4E498FBA72" Language="1033">
     <MajorUpgrade DowngradeErrorMessage="A newer version of FRP Agent is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
