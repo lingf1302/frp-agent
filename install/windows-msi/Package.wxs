@@ -6,8 +6,8 @@
     <StandardDirectory Id="ProgramFiles64Folder">
       <Directory Id="INSTALLFOLDER" Name="frp-agent">
         <Component Id="AgentBinaries" Bitness="always64" Guid="A05D3BB9-DF78-4D8D-96D3-87BD9E9F4AC6">
-          <File Id="FrpcExe" Source="$(var.SourceDir)\frpc.exe" KeyPath="yes" />
-          <File Id="FrpcServiceExe" Source="$(var.SourceDir)\frpc-service.exe" />
+          <File Id="FrpcExe" Source="$(var.SourceDir)\frpc.exe" />
+          <File Id="FrpcServiceExe" Source="$(var.SourceDir)\frpc-service.exe" KeyPath="yes" />
           <File Id="ConfigureScript" Source="$(var.SourceDir)\configure.ps1" />
           <ServiceInstall Id="AgentService" Name="frp-agent" DisplayName="FRP managed client agent" Description="FRP managed client agent" Start="demand" Type="ownProcess" ErrorControl="normal" />
           <ServiceControl Id="StopAgentService" Name="frp-agent" Stop="both" Remove="uninstall" Wait="yes" />
