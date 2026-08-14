@@ -47,7 +47,11 @@ jobs:
           ARCHITECTURE: ${{ matrix.architecture }}
         run: |
           $env:Path = "$env:USERPROFILE\\.dotnet\\tools;$env:Path"
-          $version = (Select-String -Path pkg/util/version/version.go -Pattern '^var version = "([^"]+)"').Matches[0].Groups[1].Value
+          $tag = if ($env:GITHUB_REF_TYPE -eq 'tag') { $env:GITHUB_REF_NAME } else { '${{ inputs.release_tag }}' }
+          if ($tag -notmatch '^agent-v(\d+)\.(\d+)\.(\d+)-(\d+)$') {
+            throw "Unsupported agent tag: $tag"
+          }
+          $version = "$($Matches[1]).$($Matches[2]).$($Matches[4])"
           ./hack/build-windows-msi.ps1 -Architecture $env:ARCHITECTURE -Version $version -InputDirectory ".msi-input\\windows-$env:ARCHITECTURE"
       - name: Upload MSI artifact
         uses: actions/upload-artifact@v6
